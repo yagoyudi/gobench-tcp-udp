@@ -14,7 +14,10 @@ var tcpServerCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		addr := args[0]
-		tcpServer(addr)
+		err := tcpServer(addr)
+		if err != nil {
+			logger.FatalError(err)
+		}
 	},
 }
 
