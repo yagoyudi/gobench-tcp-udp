@@ -2,10 +2,10 @@ package cmd
 
 import (
 	"fmt"
-	"log"
 	"net"
 
 	"github.com/spf13/cobra"
+	"github.com/yagoyudi/gobench-tcp-udp/internal/logger"
 )
 
 var tcpClientCmd = &cobra.Command{
@@ -16,20 +16,20 @@ var tcpClientCmd = &cobra.Command{
 		addr := args[0]
 		err := tcpClient(addr)
 		if err != nil {
-			log.Println(err)
+			logger.PrintError(err)
 		}
 	},
 }
 
 func tcpClient(address string) error {
 	// Connect to TCP server.
-	fmt.Printf("Connecting to TCP server at %s...\n", address)
+	logger.PrintInfo(fmt.Sprintf("Connecting to TCP server at %s...", address))
 	conn, err := net.Dial("tcp", address)
 	if err != nil {
 		return err
 	}
 	defer conn.Close()
-	fmt.Println("Connected to server. Sending message...")
+	logger.PrintInfo("Connected to server. Sending message...")
 
 	// Sends message.
 	message := []byte("Hello from TCP client")
@@ -37,7 +37,7 @@ func tcpClient(address string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Println("Message sent to server. Waiting for response...")
+	logger.PrintInfo("Message sent to server. Waiting for response...")
 
 	// Wait response.
 	buffer := make([]byte, 1024)
@@ -45,7 +45,7 @@ func tcpClient(address string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Printf("Received from server: %s\n", string(buffer[:n]))
+	logger.PrintInfo(fmt.Sprintf("Received from server: %s", string(buffer[:n])))
 
 	return nil
 }

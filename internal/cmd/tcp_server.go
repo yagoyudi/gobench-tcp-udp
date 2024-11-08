@@ -2,10 +2,10 @@ package cmd
 
 import (
 	"fmt"
-	"log"
 	"net"
 
 	"github.com/spf13/cobra"
+	"github.com/yagoyudi/gobench-tcp-udp/internal/logger"
 )
 
 var tcpServerCmd = &cobra.Command{
@@ -20,7 +20,7 @@ var tcpServerCmd = &cobra.Command{
 
 // TcpServer starts a TCP server on specified address.
 func tcpServer(addr string) error {
-	fmt.Printf("Starting TCP server at %s...\n", addr)
+	logger.PrintInfo(fmt.Sprintf("Starting TCP server at %s...", addr))
 
 	// Listen on specified address.
 	listener, err := net.Listen("tcp", addr)
@@ -29,16 +29,15 @@ func tcpServer(addr string) error {
 	}
 	defer listener.Close()
 
-	fmt.Println("Server started. Waiting for connections...")
+	logger.PrintInfo("Server started. Waiting for connections...")
 
 	for {
 		conn, err := listener.Accept()
 		if err != nil {
-			log.Printf("Error accepting connection: %v\n", err)
+			logger.PrintError(err)
 			continue
 		}
-
-		fmt.Println("Connection established. Handling client...")
+		logger.PrintInfo("Connection established. Handling client...")
 
 		// Create a goroutine to handle client concurrently.
 		go handleConnection(conn)
@@ -53,17 +52,17 @@ func handleConnection(conn net.Conn) {
 	buffer := make([]byte, 1024)
 	n, err := conn.Read(buffer)
 	if err != nil {
-		log.Printf("Error reading from connection: %v\n", err)
+		logger.PrintError(err)
 		return
 	}
-	fmt.Printf("Received from client: %s\n", string(buffer[:n]))
+	logger.PrintInfo(fmt.Sprintf("Received from client: %s", string(buffer[:n])))
 
 	// Send response.
 	message := []byte("Hello from TCP server")
 	_, err = conn.Write(message)
 	if err != nil {
-		log.Printf("Error writing to connection: %v\n", err)
+		logger.PrintError(err)
 		return
 	}
-	fmt.Println("Response sent to client.")
+	logger.PrintInfo("Response sent to client.")
 }
