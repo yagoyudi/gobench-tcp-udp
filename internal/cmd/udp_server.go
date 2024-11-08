@@ -2,10 +2,10 @@ package cmd
 
 import (
 	"fmt"
-	"log"
 	"net"
 
 	"github.com/spf13/cobra"
+	"github.com/yagoyudi/gobench-tcp-udp/internal/logger"
 )
 
 var udpServerCmd = &cobra.Command{
@@ -16,13 +16,13 @@ var udpServerCmd = &cobra.Command{
 		addr := args[0]
 		err := udpServer(addr)
 		if err != nil {
-			log.Fatal(err)
+			logger.FatalError(err)
 		}
 	},
 }
 
 func udpServer(address string) error {
-	fmt.Printf("Starting UDP server on %s...\n", address)
+	logger.PrintInfo(fmt.Sprintf("Starting UDP server on %s...", address))
 	addr, err := net.ResolveUDPAddr("udp", address)
 	if err != nil {
 		return err
@@ -33,25 +33,25 @@ func udpServer(address string) error {
 		return err
 	}
 	defer conn.Close()
-	fmt.Println("Server is listening for incoming messages...")
+	logger.PrintInfo("Server is listening for incoming messages...")
 
 	buffer := make([]byte, 1024)
 	for {
 		n, clientAddr, err := conn.ReadFromUDP(buffer)
 		if err != nil {
-			log.Printf("Error reading message: %v\n", err)
+			logger.PrintError(err)
 			continue
 		}
-		fmt.Printf("Received message: %s\n", string(buffer[:n]))
-		fmt.Printf("Message from %s\n", clientAddr)
+		logger.PrintInfo(fmt.Sprintf("Received message: %s", string(buffer[:n])))
+		logger.PrintInfo(fmt.Sprintf("Message from %s", clientAddr))
 
 		response := []byte("Message received by UDP server")
 		_, err = conn.WriteToUDP(response, clientAddr)
 		if err != nil {
-			log.Printf("Error sending response: %v\n", err)
+			logger.PrintError(err)
 			continue
 		}
-		fmt.Println("Response sent to client.")
+		logger.PrintInfo("Response sent to client.")
 	}
 	return nil
 }
