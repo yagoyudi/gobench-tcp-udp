@@ -16,7 +16,7 @@ var tcpClientCmd = &cobra.Command{
 		addr := args[0]
 		err := tcpClient(addr)
 		if err != nil {
-			logger.PrintError(err)
+			logger.FatalError(err)
 		}
 	},
 }
