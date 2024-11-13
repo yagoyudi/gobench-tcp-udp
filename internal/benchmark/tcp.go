@@ -34,13 +34,14 @@ func ClientTCP(address string, totalDataSize int) error {
 	}
 	totalDurationSeconds := time.Since(start).Seconds()
 	fmt.Printf("Total duration: %vs\n", totalDurationSeconds)
+	fmt.Printf("Throughput: %v bytes/s\n", float64(totalDataSize)/totalDurationSeconds)
 
 	return nil
 }
 
 // ServerTCP starts a TCP server on specified address.
 func ServerTCP(addr string) error {
-	logger.PrintInfo(fmt.Sprintf("Starting TCP server at %s...", addr))
+	logger.PrintInfo(fmt.Sprintf("Starting TCP server at %s.", addr))
 
 	// Listen on specified address.
 	listener, err := net.Listen("tcp", addr)
@@ -49,7 +50,7 @@ func ServerTCP(addr string) error {
 	}
 	defer listener.Close()
 
-	logger.PrintInfo("Server started. Waiting for connections...")
+	logger.PrintInfo("Server started.")
 
 	for {
 		conn, err := listener.Accept()
@@ -57,7 +58,7 @@ func ServerTCP(addr string) error {
 			logger.PrintError(err)
 			continue
 		}
-		logger.PrintInfo("Connection established. Handling client...")
+		logger.PrintInfo("Connection established.")
 
 		// Create a goroutine to handle client concurrently.
 		go handleConnection(conn)
@@ -69,15 +70,12 @@ func handleConnection(conn net.Conn) {
 	defer conn.Close()
 
 	// Read clients message.
-	count := 0
 	for {
 		buffer := make([]byte, 1024)
-		n, err := conn.Read(buffer)
+		_, err := conn.Read(buffer)
 		if err != nil {
-			logger.PrintInfo(err.Error())
+			//logger.PrintInfo(err.Error())
 			return
 		}
-		count += n
-		logger.PrintInfo(fmt.Sprintf("Received from client: %d bytes", count))
 	}
 }
