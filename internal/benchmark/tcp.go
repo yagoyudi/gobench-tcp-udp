@@ -71,7 +71,7 @@ func handleConnection(conn net.Conn) {
 
 	// Read clients message.
 	for {
-		buffer := make([]byte, 1024)
+		buffer := make([]byte, packetSize)
 		_, err := conn.Read(buffer)
 		if err != nil {
 			//logger.PrintInfo(err.Error())
