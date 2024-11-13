@@ -23,13 +23,13 @@ var udpClientCmd = &cobra.Command{
 		var totalDataSize int
 		switch total {
 		case "10mb":
-			totalDataSize = 10 * 1024 * 1024
+			totalDataSize = tenMB
 		case "100mb":
-			totalDataSize = 100 * 1024 * 1024
+			totalDataSize = hundredMB
 		case "500mb":
-			totalDataSize = 500 * 1024 * 1024
+			totalDataSize = fiveHundredMB
 		case "1gb":
-			totalDataSize = 1024 * 1024 * 1024
+			totalDataSize = oneGB
 		}
 		err = benchmark.ClientUDP(addr, totalDataSize)
 		if err != nil {
