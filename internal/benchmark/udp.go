@@ -1,34 +1,13 @@
 package benchmark
 
 import (
-	"bytes"
-	"encoding/gob"
 	"fmt"
+	"log"
 	"net"
 	"time"
 
 	"github.com/yagoyudi/gobench-tcp-udp/internal/logger"
 )
-
-type PacketUDP struct {
-	Type string
-	Data []byte
-}
-
-func (p *PacketUDP) Serialize() ([]byte, error) {
-	var buf bytes.Buffer
-	encoder := gob.NewEncoder(&buf)
-	err := encoder.Encode(p)
-	return buf.Bytes(), err
-}
-
-func Deserialize(data []byte) (*PacketUDP, error) {
-	var p PacketUDP
-	buf := bytes.NewBuffer(data)
-	decoder := gob.NewDecoder(buf)
-	err := decoder.Decode(&p)
-	return &p, err
-}
 
 func ClientUDP(addr string, totalDataSize int) error {
 	// Connect to server.
@@ -47,19 +26,18 @@ func ClientUDP(addr string, totalDataSize int) error {
 	}
 	start := time.Now()
 	for i := 0; i < numPackets; i++ {
-		//timeoutDuration := 2 * time.Second
-		//conn.SetDeadline(time.Now().Add(timeoutDuration))
-
 		for {
 			_, err = conn.Write(msg)
 			if err != nil {
 				return err
 			}
 
+			conn.SetDeadline(time.Now().Add(timeoutDurationUDP))
 			ack := make([]byte, 3)
 			_, err := conn.Read(ack)
 			if err != nil {
-				return err
+				log.Println(err)
+				continue
 			}
 
 			if string(ack) == "ack" {
