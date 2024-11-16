@@ -11,7 +11,7 @@ func init() {
 }
 
 var udpClientCmd = &cobra.Command{
-	Use:   "client [address]",
+	Use:   "client [server-address:port]",
 	Short: "Run UDP client",
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
@@ -20,16 +20,9 @@ var udpClientCmd = &cobra.Command{
 		if err != nil {
 			logger.FatalError(err)
 		}
-		var totalDataSize int
-		switch total {
-		case "10mb":
-			totalDataSize = tenMB
-		case "100mb":
-			totalDataSize = hundredMB
-		case "500mb":
-			totalDataSize = fiveHundredMB
-		case "1gb":
-			totalDataSize = oneGB
+		totalDataSize, err := parseTotalFlag(total)
+		if err != nil {
+			logger.FatalError(err)
 		}
 		err = benchmark.ClientUDP(addr, totalDataSize)
 		if err != nil {
