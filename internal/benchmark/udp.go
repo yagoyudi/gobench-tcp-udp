@@ -1,208 +1,140 @@
 package benchmark
 
 import (
-	"bytes"
-	"encoding/binary"
 	"fmt"
 	"log"
 	"net"
 	"time"
+
+	"github.com/yagoyudi/gobench-tcp-udp/internal/udp"
 )
 
-const (
-	TypeAck uint8 = iota
-	TypeData
-	TypeEnd
-)
-
-const (
-	dataSize = 1024
-	pkgSize  = 1 + 4 + dataSize // Size of struct Package.
-	winSize  = 5                // Length of window
-	timeout  = 2 * time.Second
-)
-
-type Package struct {
-	Type uint8
-	Seq  uint32
-	Data [dataSize]uint8
-}
-
-func (p *Package) Serialize() ([]byte, error) {
-	buf := new(bytes.Buffer)
-	err := binary.Write(buf, binary.BigEndian, p)
-	return buf.Bytes(), err
-}
-
-func Deserialize(data []byte) (*Package, error) {
-	var p Package
-	buf := bytes.NewBuffer(data)
-	err := binary.Read(buf, binary.BigEndian, &p)
-	return &p, err
-}
-
-func ClientUDP(addr string, totalDataSize int) error {
-	conn, err := net.Dial("udp", addr)
+func ClientUDP(addr string, totalData int) error {
+	client, err := udp.NewClient(addr)
 	if err != nil {
 		return err
 	}
-	defer conn.Close()
+	defer client.Close()
 	log.Println("Connected to server.")
 
-	numPkgs := totalDataSize / dataSize
+	totalPackets := totalData / udp.MaxDataLen
 	base := 0
 	nextSeq := 0
 
-	var pkgs []Package
-	for i := 0; i < numPkgs; i++ {
-		var msg [dataSize]uint8
-		for j := 0; j < dataSize; j++ {
-			msg[j] = 'a'
+	packets := make([]udp.Packet, totalPackets)
+	for i := 0; i < totalPackets; i++ {
+		var data [udp.MaxDataLen]uint8
+		for j := 0; j < udp.MaxDataLen; j++ {
+			data[j] = 'a'
 		}
-		pkg := Package{
-			Type: TypeData,
+		packets[i] = udp.Packet{
+			Type: udp.TypeData,
 			Seq:  uint32(i),
-			Data: msg,
+			Data: data,
 		}
-		pkgs = append(pkgs, pkg)
 	}
 
-	done := make(chan bool)
-
 	start := time.Now()
-
-	// Gerenciar retransmissões.
-	go func() {
-		for {
-			select {
-			case <-done:
-				return
-			case <-time.After(timeout):
-				fmt.Println("Timeout occurred, retransmitting window")
-				for i := base; i < nextSeq; i++ {
-					data, err := pkgs[i].Serialize()
-					if err != nil {
-						log.Printf("serialize: %s\n", err.Error())
-					}
-					_, err = conn.Write(data)
-					if err != nil {
-						log.Printf("write: %s\n", err.Error())
-					}
-				}
-			}
-		}
-	}()
-
-	for base < numPkgs {
+	for base < totalPackets {
 		// Envia pacotes na janela
-		for nextSeq < base+winSize && nextSeq < numPkgs {
-			data, _ := pkgs[nextSeq].Serialize()
-			_, err := conn.Write(data)
+		for nextSeq < base+udp.WindowLen && nextSeq < totalPackets {
+			err := client.Send(&packets[nextSeq])
 			if err != nil {
-				log.Printf("write: %s\n", err.Error())
+				log.Println(err)
 			}
-			log.Printf("Sent pkg %d\n", nextSeq)
+			//log.Printf("Sent pkg %d\n", nextSeq)
 			nextSeq++
 		}
 
-		// Espera ACK
-		conn.SetReadDeadline(time.Now().Add(timeout))
-		buf := make([]byte, pkgSize)
-		_, err := conn.Read(buf)
+		// Tenta receber um ACK
+		packet, err := client.Recv()
 		if err != nil {
-			log.Printf("read: %s\n", err.Error())
+			if opErr, ok := err.(net.Error); ok && opErr.Timeout() {
+				log.Println("Timeout occurred, retransmitting window")
+				// Retransmite pacotes na janela
+				for i := base; i < nextSeq; i++ {
+					err := client.Send(&packets[i])
+					if err != nil {
+						log.Printf("Failed to resend packet %d: %v\n", i, err)
+					}
+				}
+				continue
+			} else {
+				log.Printf("Error receiving packet: %v\n", err)
+				continue
+			}
 		}
 
-		pkg, err := Deserialize(buf)
-		if err != nil {
-			log.Printf("deserialize: %s\n", err.Error())
-		}
-		if pkg.Type != TypeAck {
-			log.Printf("want ack, got %d\n", pkg.Type)
+		if packet.Type != udp.TypeAck {
+			log.Printf("Unexpected packet type: %d\n", packet.Type)
+			continue
 		}
 
-		log.Printf("Received ACK %d\n", pkg.Seq)
-		base = int(pkg.Seq + 1)
+		//log.Printf("Received ACK %d\n", packet.Seq)
+		if packet.Seq >= uint32(base) {
+			base = int(packet.Seq + 1)
+		}
 	}
 
-	endPkg := Package{
-		Type: TypeEnd,
-		Seq:  uint32(numPkgs),
+	endPacket := udp.Packet{
+		Type: udp.TypeEnd,
 	}
-	data, _ := endPkg.Serialize()
-	conn.Write(data)
-	fmt.Println("Sent end pkg")
-
-	done <- true
+	err = client.Send(&endPacket)
+	if err != nil {
+		return err
+	}
+	log.Println("Sent end pkg")
 
 	totalDurationSeconds := time.Since(start).Seconds()
 	fmt.Printf("Total duration: %vs\n", totalDurationSeconds)
-	fmt.Printf("Throughput: %v bytes/s\n", float64(totalDataSize)/totalDurationSeconds)
+	fmt.Printf("Throughput: %v bytes/s\n", float64(totalData)/totalDurationSeconds)
 
 	return nil
 }
 
-func ServerUDP(address string) error {
-	log.Printf("Starting UDP server on %s\n", address)
+func ServerUDP(addr string) error {
+	log.Printf("Starting UDP server on %s\n", addr)
 
-	addr, err := net.ResolveUDPAddr("udp", address)
+	server, err := udp.NewServer(addr)
 	if err != nil {
 		return err
 	}
-
-	conn, err := net.ListenUDP("udp", addr)
-	if err != nil {
-		return err
-	}
-	defer conn.Close()
-	log.Println("Server is listening for incoming messages.")
+	defer server.Close()
+	log.Println("Server is listening for incoming messages")
 
 	expectedSeq := uint32(0)
 	for {
-		buf := make([]byte, pkgSize)
-		_, clientAddr, err := conn.ReadFromUDP(buf)
+		packet, clientAddr, err := server.Recv()
 		if err != nil {
-			log.Printf("ReadFromUDP: %s\n", err.Error())
+			log.Println(err)
 			continue
 		}
 
-		pkg, err := Deserialize(buf)
-		if err != nil {
-			log.Printf("Deserialize: %s\n", err.Error())
-			continue
-		}
-
-		if pkg.Type == TypeEnd {
+		if packet.Type == udp.TypeEnd {
+			expectedSeq = 0
 			log.Println("Received type END")
 			continue
 		}
 
-		log.Printf("Received packet %d\n", pkg.Seq)
+		log.Printf("Received packet %d\n", packet.Seq)
 
 		var ackSeq uint32
-		if pkg.Seq == expectedSeq {
+		if packet.Seq == expectedSeq {
 			expectedSeq++
-			ackSeq = pkg.Seq
-		} else if pkg.Seq < expectedSeq {
-			ackSeq = expectedSeq - 1
+			ackSeq = packet.Seq
 		} else {
 			// Ignore unordered packets.
 			continue
 		}
 
-		ack := Package{
-			Type: TypeAck,
+		ackPacket := udp.Packet{
+			Type: udp.TypeAck,
 			Seq:  ackSeq,
 		}
-		data, err := ack.Serialize()
-		if err != nil {
-			log.Printf("Serialize: %s\n", err.Error())
-			continue
-		}
-
-		_, err = conn.WriteToUDP(data, clientAddr)
+		err = server.Send(&ackPacket, clientAddr)
 		if err != nil {
 			log.Println(err)
+			continue
 		}
 		log.Printf("Sent ACK %d\n", ackSeq)
 	}

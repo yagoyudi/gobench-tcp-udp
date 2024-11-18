@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func ClientTCP(address string, totalDataSize int) error {
+func ClientTCP(address string, totalData int) error {
 	// Connect to TCP server.
 	log.Printf("Connecting to TCP server at %s", address)
 	conn, err := net.Dial("tcp", address)
@@ -17,15 +17,15 @@ func ClientTCP(address string, totalDataSize int) error {
 	defer conn.Close()
 	log.Println("Connected to server")
 
-	numPkgs := totalDataSize / pkgSize
-	data := make([]byte, pkgSize)
+	totalPackets := totalData / MaxDataLen
+	data := make([]byte, MaxDataLen)
 
 	// Sends message.
-	for i := 0; i < pkgSize; i++ {
+	for i := 0; i < MaxDataLen; i++ {
 		data[i] = 'a'
 	}
 	start := time.Now()
-	for i := 0; i < numPkgs; i++ {
+	for i := 0; i < totalPackets; i++ {
 		_, err = conn.Write(data)
 		if err != nil {
 			return err
@@ -33,7 +33,7 @@ func ClientTCP(address string, totalDataSize int) error {
 	}
 	totalDurationSeconds := time.Since(start).Seconds()
 	fmt.Printf("Total duration: %vs\n", totalDurationSeconds)
-	fmt.Printf("Throughput: %v bytes/s\n", float64(totalDataSize)/totalDurationSeconds)
+	fmt.Printf("Throughput: %v bytes/s\n", float64(totalData)/totalDurationSeconds)
 
 	return nil
 }
@@ -70,8 +70,8 @@ func handleConnection(conn net.Conn) {
 
 	// Read clients message.
 	for {
-		buffer := make([]byte, pkgSize)
-		_, err := conn.Read(buffer)
+		buf := make([]byte, MaxDataLen)
+		_, err := conn.Read(buf)
 		if err != nil {
 			log.Printf("Read: %s\n", err.Error())
 			return
