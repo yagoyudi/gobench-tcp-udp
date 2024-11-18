@@ -18,15 +18,15 @@ func ClientTCP(address string, totalDataSize int) error {
 	defer conn.Close()
 	logger.PrintInfo("Connected to server. Sending message...")
 
-	numPackets := totalDataSize / packetSize
-	data := make([]byte, packetSize)
+	numPkgs := totalDataSize / pkgSize
+	data := make([]byte, pkgSize)
 
 	// Sends message.
-	for i := 0; i < packetSize; i++ {
+	for i := 0; i < pkgSize; i++ {
 		data[i] = 'a'
 	}
 	start := time.Now()
-	for i := 0; i < numPackets; i++ {
+	for i := 0; i < numPkgs; i++ {
 		_, err = conn.Write(data)
 		if err != nil {
 			return err
@@ -71,7 +71,7 @@ func handleConnection(conn net.Conn) {
 
 	// Read clients message.
 	for {
-		buffer := make([]byte, packetSize)
+		buffer := make([]byte, pkgSize)
 		_, err := conn.Read(buffer)
 		if err != nil {
 			//logger.PrintInfo(err.Error())
