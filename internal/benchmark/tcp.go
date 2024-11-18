@@ -2,21 +2,20 @@ package benchmark
 
 import (
 	"fmt"
+	"log"
 	"net"
 	"time"
-
-	"github.com/yagoyudi/gobench-tcp-udp/internal/logger"
 )
 
 func ClientTCP(address string, totalDataSize int) error {
 	// Connect to TCP server.
-	logger.PrintInfo(fmt.Sprintf("Connecting to TCP server at %s...", address))
+	log.Printf("Connecting to TCP server at %s", address)
 	conn, err := net.Dial("tcp", address)
 	if err != nil {
 		return err
 	}
 	defer conn.Close()
-	logger.PrintInfo("Connected to server. Sending message...")
+	log.Println("Connected to server")
 
 	numPkgs := totalDataSize / pkgSize
 	data := make([]byte, pkgSize)
@@ -41,7 +40,7 @@ func ClientTCP(address string, totalDataSize int) error {
 
 // ServerTCP starts a TCP server on specified address.
 func ServerTCP(addr string) error {
-	logger.PrintInfo(fmt.Sprintf("Starting TCP server at %s.", addr))
+	log.Printf("Starting TCP server at %s", addr)
 
 	// Listen on specified address.
 	listener, err := net.Listen("tcp", addr)
@@ -50,15 +49,15 @@ func ServerTCP(addr string) error {
 	}
 	defer listener.Close()
 
-	logger.PrintInfo("Server started.")
+	log.Println("Server started")
 
 	for {
 		conn, err := listener.Accept()
 		if err != nil {
-			logger.PrintError(err)
+			log.Printf("Accept: %s\n", err.Error())
 			continue
 		}
-		logger.PrintInfo("Connection established.")
+		log.Println("Connection established")
 
 		// Create a goroutine to handle client concurrently.
 		go handleConnection(conn)
@@ -74,7 +73,7 @@ func handleConnection(conn net.Conn) {
 		buffer := make([]byte, pkgSize)
 		_, err := conn.Read(buffer)
 		if err != nil {
-			//logger.PrintInfo(err.Error())
+			log.Printf("Read: %s\n", err.Error())
 			return
 		}
 	}
