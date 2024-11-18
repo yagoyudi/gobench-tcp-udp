@@ -1,9 +1,10 @@
 package cmd
 
 import (
+	"log"
+
 	"github.com/spf13/cobra"
 	"github.com/yagoyudi/gobench-tcp-udp/internal/benchmark"
-	"github.com/yagoyudi/gobench-tcp-udp/internal/logger"
 )
 
 func init() {
@@ -18,15 +19,15 @@ var udpClientCmd = &cobra.Command{
 		addr := args[0]
 		total, err := cmd.Flags().GetString("total")
 		if err != nil {
-			logger.FatalError(err)
+			log.Fatal(err)
 		}
 		totalDataSize, err := parseTotalFlag(total)
 		if err != nil {
-			logger.FatalError(err)
+			log.Fatal(err)
 		}
 		err = benchmark.ClientUDP(addr, totalDataSize)
 		if err != nil {
-			logger.FatalError(err)
+			log.Fatal(err)
 		}
 	},
 }

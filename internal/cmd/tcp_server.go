@@ -1,9 +1,10 @@
 package cmd
 
 import (
+	"log"
+
 	"github.com/spf13/cobra"
 	"github.com/yagoyudi/gobench-tcp-udp/internal/benchmark"
-	"github.com/yagoyudi/gobench-tcp-udp/internal/logger"
 )
 
 var tcpServerCmd = &cobra.Command{
@@ -14,7 +15,7 @@ var tcpServerCmd = &cobra.Command{
 		addr := args[0]
 		err := benchmark.ServerTCP(addr)
 		if err != nil {
-			logger.FatalError(err)
+			log.Fatal(err)
 		}
 	},
 }
