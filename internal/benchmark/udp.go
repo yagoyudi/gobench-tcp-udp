@@ -18,15 +18,15 @@ func ClientUDP(addr string, totalData int) error {
 	log.Println("Connected to server.")
 
 	totalPackets := totalData / udp.MaxDataLen
-	base := 0
-	nextSeq := 0
+	base, nextSeq := 0, 0
+
+	data := [udp.MaxDataLen]uint8{}
+	for i := range data {
+		data[i] = 'a'
+	}
 
 	packets := make([]udp.Packet, totalPackets)
 	for i := 0; i < totalPackets; i++ {
-		var data [udp.MaxDataLen]uint8
-		for j := 0; j < udp.MaxDataLen; j++ {
-			data[j] = 'a'
-		}
 		packets[i] = udp.Packet{
 			Type: udp.TypeData,
 			Seq:  uint32(i),
@@ -35,55 +35,43 @@ func ClientUDP(addr string, totalData int) error {
 	}
 
 	start := time.Now()
-	for base < totalPackets {
-		// Envia pacotes na janela
-		for nextSeq < base+udp.WindowLen && nextSeq < totalPackets {
-			err := client.Send(&packets[nextSeq])
-			if err != nil {
-				log.Println(err)
-			}
-			//log.Printf("Sent pkg %d\n", nextSeq)
-			nextSeq++
-		}
 
+	ackCh := make(chan uint32, udp.WindowLen)
+	defer close(ackCh)
+
+	go func() {
+		for base < totalPackets {
+			for nextSeq < base+udp.WindowLen && nextSeq < totalPackets {
+				_ = client.Send(&packets[nextSeq])
+				//log.Printf("Sent pkt %d\n", nextSeq)
+				nextSeq++
+			}
+		}
+	}()
+
+	for base < totalPackets {
 		// Tenta receber um ACK
 		packet, err := client.Recv()
 		if err != nil {
 			if opErr, ok := err.(net.Error); ok && opErr.Timeout() {
-				log.Println("Timeout occurred, retransmitting window")
-				// Retransmite pacotes na janela
 				for i := base; i < nextSeq; i++ {
-					err := client.Send(&packets[i])
-					if err != nil {
-						log.Printf("Failed to resend packet %d: %v\n", i, err)
-					}
+					_ = client.Send(&packets[i])
 				}
 				continue
-			} else {
-				log.Printf("Error receiving packet: %v\n", err)
-				continue
 			}
-		}
-
-		if packet.Type != udp.TypeAck {
-			log.Printf("Unexpected packet type: %d\n", packet.Type)
+			log.Printf("Error receiving packet: %v\n", err)
 			continue
 		}
 
-		//log.Printf("Received ACK %d\n", packet.Seq)
-		if packet.Seq >= uint32(base) {
+		if packet.Type == udp.TypeAck && packet.Seq >= uint32(base) {
+			//log.Printf("Received ACK %d\n", packet.Seq)
 			base = int(packet.Seq + 1)
 		}
 	}
 
-	endPacket := udp.Packet{
-		Type: udp.TypeEnd,
-	}
-	err = client.Send(&endPacket)
-	if err != nil {
-		return err
-	}
-	log.Println("Sent end pkg")
+	endPacket := udp.Packet{Type: udp.TypeEnd}
+	_ = client.Send(&endPacket)
+	//log.Println("Sent end pkg")
 
 	totalDurationSeconds := time.Since(start).Seconds()
 	fmt.Printf("Total duration: %vs\n", totalDurationSeconds)
@@ -116,27 +104,18 @@ func ServerUDP(addr string) error {
 			continue
 		}
 
-		log.Printf("Received packet %d\n", packet.Seq)
+		//log.Printf("Received packet %d\n", packet.Seq)
 
-		var ackSeq uint32
 		if packet.Seq == expectedSeq {
 			expectedSeq++
-			ackSeq = packet.Seq
-		} else {
-			// Ignore unordered packets.
-			continue
 		}
 
 		ackPacket := udp.Packet{
 			Type: udp.TypeAck,
-			Seq:  ackSeq,
+			Seq:  packet.Seq,
 		}
-		err = server.Send(&ackPacket, clientAddr)
-		if err != nil {
-			log.Println(err)
-			continue
-		}
-		log.Printf("Sent ACK %d\n", ackSeq)
+		_ = server.Send(&ackPacket, clientAddr)
+		//log.Printf("Sent ACK %d\n", packet.Seq)
 	}
 
 	return nil
