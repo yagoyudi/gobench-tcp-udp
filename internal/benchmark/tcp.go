@@ -33,7 +33,7 @@ func ClientTCP(address string, totalData int) error {
 	}
 	totalDurationSeconds := time.Since(start).Seconds()
 	fmt.Printf("Total duration: %vs\n", totalDurationSeconds)
-	fmt.Printf("Bytes sent: %v bytes/s\n", 1024*totalPackets)
+	fmt.Printf("Sent: %v bytes\n", 1024*totalPackets)
 
 	return nil
 }
@@ -78,6 +78,6 @@ func handleConnection(conn net.Conn) {
 			return
 		}
 		count += n
-		fmt.Printf("Bytes sent: %d\n", count)
+		fmt.Printf("Received: %d bytes\n", count)
 	}
 }

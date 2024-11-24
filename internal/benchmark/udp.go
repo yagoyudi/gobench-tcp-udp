@@ -30,7 +30,7 @@ func ClientUDP(addr string, totalData int) error {
 
 	totalDurationSeconds := time.Since(start).Seconds()
 	fmt.Printf("Total duration: %vs\n", totalDurationSeconds)
-	fmt.Printf("Bytes sent: %v bytes/s\n", totalData)
+	fmt.Printf("Sent: %v bytes\n", totalData)
 
 	return nil
 }
@@ -59,7 +59,7 @@ func ServerUDP(address string) error {
 			return err
 		}
 		count += n
-		fmt.Printf("Bytes recieved: %d\n", count)
+		fmt.Printf("Received: %d bytes\n", count)
 	}
 
 	return nil
