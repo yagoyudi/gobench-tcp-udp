@@ -17,11 +17,11 @@ func ClientTCP(address string, totalData int) error {
 	defer conn.Close()
 	log.Println("Connected to server")
 
-	totalPackets := totalData / MaxDataLen
-	data := make([]byte, MaxDataLen)
+	totalPackets := totalData / 1024
+	data := make([]byte, 1024)
 
 	// Sends message.
-	for i := 0; i < MaxDataLen; i++ {
+	for i := 0; i < 1024; i++ {
 		data[i] = 'a'
 	}
 	start := time.Now()
@@ -33,7 +33,7 @@ func ClientTCP(address string, totalData int) error {
 	}
 	totalDurationSeconds := time.Since(start).Seconds()
 	fmt.Printf("Total duration: %vs\n", totalDurationSeconds)
-	fmt.Printf("Bytes sent: %v bytes/s\n", MaxDataLen*totalPackets)
+	fmt.Printf("Bytes sent: %v bytes/s\n", 1024*totalPackets)
 
 	return nil
 }
@@ -71,7 +71,7 @@ func handleConnection(conn net.Conn) {
 	// Read clients message.
 	count := 0
 	for {
-		buf := make([]byte, MaxDataLen)
+		buf := make([]byte, 1024)
 		n, err := conn.Read(buf)
 		if err != nil {
 			log.Printf("Read: %s\n", err.Error())
