@@ -8,7 +8,7 @@ import (
 )
 
 func init() {
-	udpClientCmd.Flags().String("total", "10mb", "Total payload to be transfered (10mb|100mb|500mb|1gb)")
+	udpClientCmd.Flags().String("total", "10mb", "Total payload to be transfered (100mb|500mb|1gb|5gb|10gb)")
 }
 
 var udpClientCmd = &cobra.Command{
@@ -21,10 +21,7 @@ var udpClientCmd = &cobra.Command{
 		if err != nil {
 			log.Fatal(err)
 		}
-		totalDataSize, err := parseTotalFlag(total)
-		if err != nil {
-			log.Fatal(err)
-		}
+		totalDataSize := parseTotalFlag(total)
 		err = benchmark.ClientUDP(addr, totalDataSize)
 		if err != nil {
 			log.Fatal(err)

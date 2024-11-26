@@ -1,28 +1,28 @@
 package cmd
 
-import "fmt"
-
 const (
-	oneMB         = 1024 * 1024 * 1024
+	oneMB         = 1 * 1024 * 1024
+	tenMB         = 10 * oneMB
 	hundredMB     = 100 * oneMB
 	fiveHundredMB = 500 * oneMB
-	oneGB         = 1024 * 1024 * 1024
+	oneGB         = 1 * 1024 * 1024 * 1024
 	fiveGB        = 5 * oneGB
 	tenGB         = 10 * oneGB
 )
 
-func parseTotalFlag(total string) (int, error) {
+func parseTotalFlag(total string) int {
 	switch total {
 	case "100mb":
-		return hundredMB, nil
+		return hundredMB
 	case "500mb":
-		return fiveHundredMB, nil
+		return fiveHundredMB
 	case "1gb":
-		return oneGB, nil
+		return oneGB
 	case "5gb":
-		return fiveGB, nil
+		return fiveGB
 	case "10gb":
-		return tenGB, nil
+		return tenGB
+	default:
+		return tenMB
 	}
-	return 0, fmt.Errorf("invalid amount")
 }
