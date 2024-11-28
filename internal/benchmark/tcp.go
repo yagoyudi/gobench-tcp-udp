@@ -1,7 +1,6 @@
 package benchmark
 
 import (
-	"fmt"
 	"io"
 	"log"
 	"net"
@@ -34,8 +33,8 @@ func ClientTCP(address string, totalData int) error {
 		}
 	}
 	totalDurationSeconds := time.Since(start).Seconds()
-	fmt.Printf("Total duration: %vs\n", totalDurationSeconds)
-	fmt.Printf("Sent: %v bytes\n", 1024*totalPackets)
+	log.Printf("Total duration: %vs\n", totalDurationSeconds)
+	log.Printf("Sent: %v bytes\n", 1024*totalPackets)
 
 	return nil
 }

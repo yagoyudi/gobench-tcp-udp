@@ -1,7 +1,6 @@
 package benchmark
 
 import (
-	"fmt"
 	"log"
 	"net"
 	"time"
@@ -29,8 +28,8 @@ func ClientUDP(addr string, totalData int) error {
 	}
 
 	totalDurationSeconds := time.Since(start).Seconds()
-	fmt.Printf("Total duration: %vs\n", totalDurationSeconds)
-	fmt.Printf("Sent: %v bytes\n", totalData)
+	log.Printf("Total duration: %vs\n", totalDurationSeconds)
+	log.Printf("Sent: %v bytes\n", totalData)
 
 	return nil
 }
