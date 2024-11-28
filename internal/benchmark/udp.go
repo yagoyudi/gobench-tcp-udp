@@ -54,27 +54,30 @@ func ServerUDP(address string) error {
 	buf := make([]byte, 1024)
 	count := 0
 
-	// Read first message.
-	conn.SetReadDeadline(time.Now().Add(1 * time.Second))
-	n, err := conn.Read(buf)
-	if err != nil {
-		return err
-	}
-	count += n
-	// Start timer.
-	start := time.Now()
+	var start time.Time
 	for {
 		conn.SetReadDeadline(time.Now().Add(1 * time.Second))
 		n, err := conn.Read(buf)
 		if err != nil {
-			if netErr, ok := err.(net.Error); ok && netErr.Timeout() {
-				log.Printf("Received: %d bytes\n", count)
-				log.Printf("Total duration: %vs\n", time.Since(start).Seconds()-1)
-				return nil
+			if netErr, _ := err.(net.Error); netErr.Timeout() {
+				if count != 0 {
+					log.Printf("Received: %d bytes\n", count)
+					log.Printf("Total duration: %vs\n", time.Since(start).Seconds()-1)
+				}
+				start = time.Now()
+				count = 0
 			} else {
-				return err
+				log.Println(err)
 			}
+			continue
 		}
+
+		// Only starts to count when first packet arrives.
+		// Every packet has size 1024.
+		if count == 1024 {
+			start = time.Now()
+		}
+
 		count += n
 	}
 
