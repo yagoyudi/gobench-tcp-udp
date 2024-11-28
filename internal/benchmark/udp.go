@@ -13,7 +13,7 @@ func ClientUDP(addr string, totalData int) error {
 		return err
 	}
 	defer conn.Close()
-	log.Println("Connected to server.")
+	log.Println("Starting to send data")
 
 	totalPackets := totalData / 1024
 
@@ -53,13 +53,29 @@ func ServerUDP(address string) error {
 
 	buf := make([]byte, 1024)
 	count := 0
+
+	// Read first message.
+	conn.SetReadDeadline(time.Now().Add(1 * time.Second))
+	n, err := conn.Read(buf)
+	if err != nil {
+		return err
+	}
+	count += n
+	// Start timer.
+	start := time.Now()
 	for {
+		conn.SetReadDeadline(time.Now().Add(1 * time.Second))
 		n, err := conn.Read(buf)
 		if err != nil {
-			return err
+			if netErr, ok := err.(net.Error); ok && netErr.Timeout() {
+				log.Printf("Received: %d bytes\n", count)
+				log.Printf("Total duration: %vs\n", time.Since(start).Seconds()-1)
+				return nil
+			} else {
+				return err
+			}
 		}
 		count += n
-		fmt.Printf("Received: %d bytes\n", count)
 	}
 
 	return nil

@@ -2,6 +2,7 @@ package benchmark
 
 import (
 	"fmt"
+	"io"
 	"log"
 	"net"
 	"time"
@@ -16,6 +17,7 @@ func ClientTCP(address string, totalData int) error {
 	}
 	defer conn.Close()
 	log.Println("Connected to server")
+	log.Println("Starting to send data")
 
 	totalPackets := totalData / 1024
 	data := make([]byte, 1024)
@@ -70,14 +72,18 @@ func handleConnection(conn net.Conn) {
 
 	// Read clients message.
 	count := 0
+	buf := make([]byte, 1024)
 	for {
-		buf := make([]byte, 1024)
+		conn.SetReadDeadline(time.Now().Add(1 * time.Second))
 		n, err := conn.Read(buf)
 		if err != nil {
-			log.Printf("Read: %s\n", err.Error())
+			if err == io.EOF {
+				log.Printf("Received: %d bytes\n", count)
+			} else {
+				log.Printf("Read: %s\n", err.Error())
+			}
 			return
 		}
 		count += n
-		fmt.Printf("Received: %d bytes\n", count)
 	}
 }
