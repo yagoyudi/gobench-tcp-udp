@@ -1,0 +1,3 @@
+2024/11/28 07:44:30 Starting to send data
+Total duration: 2.303477629s
+Sent: 262144000 bytes

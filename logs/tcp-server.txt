@@ -1,0 +1,12 @@
+2024/11/28 07:30:56 Starting TCP server at 192.168.18.7:4000
+2024/11/28 07:30:56 Server started
+2024/11/28 07:31:05 Connection established
+2024/11/28 07:31:08 Received: 262144000 bytes
+2024/11/28 07:31:20 Connection established
+2024/11/28 07:31:23 Received: 262144000 bytes
+2024/11/28 07:31:28 Connection established
+2024/11/28 07:31:32 Received: 262144000 bytes
+2024/11/28 07:31:38 Connection established
+2024/11/28 07:31:41 Received: 262144000 bytes
+2024/11/28 07:31:48 Connection established
+2024/11/28 07:31:51 Received: 262144000 bytes

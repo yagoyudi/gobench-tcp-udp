@@ -8,7 +8,7 @@ import (
 )
 
 func init() {
-	udpClientCmd.Flags().String("total", "10mb", "Total payload to be transfered (100mb|500mb|1gb|5gb|10gb)")
+	udpClientCmd.Flags().String("total", "250mb", "Total payload to be transfered (250mb|500mb|1gb|2gb|4gb)")
 }
 
 var udpClientCmd = &cobra.Command{

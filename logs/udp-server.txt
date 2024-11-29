@@ -1,0 +1,12 @@
+2024/11/28 07:41:57 Starting UDP server on 192.168.18.7:4000
+2024/11/28 07:41:57 Server is listening for incoming messages
+2024/11/28 07:42:03 Received: 233885696 bytes
+2024/11/28 07:42:03 Total duration: 2.390442937s
+2024/11/28 07:42:40 Received: 245359616 bytes
+2024/11/28 07:42:40 Total duration: 2.328751815s
+2024/11/28 07:42:44 Received: 213613568 bytes
+2024/11/28 07:42:44 Total duration: 2.372748467s
+2024/11/28 07:42:50 Received: 228963328 bytes
+2024/11/28 07:42:50 Total duration: 2.427638844s
+2024/11/28 07:43:20 Received: 249134080 bytes
+2024/11/28 07:43:20 Total duration: 2.359253177s
