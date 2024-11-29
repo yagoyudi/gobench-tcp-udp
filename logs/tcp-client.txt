@@ -1,29 +1,125 @@
-2024/11/28 07:31:05 Connecting to TCP server at 192.168.18.7:4000
-2024/11/28 07:31:05 Connected to server
-2024/11/28 07:31:05 Starting to send data
-Total duration: 2.982018511s
-Sent: 262144000 bytes
-
-2024/11/28 07:31:20 Connecting to TCP server at 192.168.18.7:4000
-2024/11/28 07:31:20 Connected to server
-2024/11/28 07:31:20 Starting to send data
-Total duration: 2.726524674s
-Sent: 262144000 bytes
-
-2024/11/28 07:31:28 Connecting to TCP server at 192.168.18.7:4000
-2024/11/28 07:31:28 Connected to server
-2024/11/28 07:31:28 Starting to send data
-Total duration: 3.002785928s
-Sent: 262144000 bytes
-
-2024/11/28 07:31:38 Connecting to TCP server at 192.168.18.7:4000
-2024/11/28 07:31:38 Connected to server
-2024/11/28 07:31:38 Starting to send data
-Total duration: 2.73600484s
-Sent: 262144000 bytes
-
-2024/11/28 07:31:48 Connecting to TCP server at 192.168.18.7:4000
-2024/11/28 07:31:48 Connected to server
-2024/11/28 07:31:48 Starting to send data
-Total duration: 2.655074866s
-Sent: 262144000 bytes
+2024/11/28 07:56:43 Connecting to TCP server at 192.168.18.7:4000
+2024/11/28 07:56:43 Connected to server
+2024/11/28 07:56:43 Starting to send data
+2024/11/28 07:56:46 Total duration: 2.99657917s
+2024/11/28 07:56:46 Sent: 262144000 bytes
+2024/11/28 07:56:49 Connecting to TCP server at 192.168.18.7:4000
+2024/11/28 07:56:49 Connected to server
+2024/11/28 07:56:49 Starting to send data
+2024/11/28 07:56:52 Total duration: 2.864712904s
+2024/11/28 07:56:52 Sent: 262144000 bytes
+2024/11/28 07:56:54 Connecting to TCP server at 192.168.18.7:4000
+2024/11/28 07:56:54 Connected to server
+2024/11/28 07:56:54 Starting to send data
+2024/11/28 07:56:57 Total duration: 2.934236823s
+2024/11/28 07:56:57 Sent: 262144000 bytes
+2024/11/28 07:56:59 Connecting to TCP server at 192.168.18.7:4000
+2024/11/28 07:56:59 Connected to server
+2024/11/28 07:56:59 Starting to send data
+2024/11/28 07:57:02 Total duration: 2.771201484s
+2024/11/28 07:57:02 Sent: 262144000 bytes
+2024/11/28 07:57:03 Connecting to TCP server at 192.168.18.7:4000
+2024/11/28 07:57:03 Connected to server
+2024/11/28 07:57:03 Starting to send data
+2024/11/28 07:57:06 Total duration: 2.783105511s
+2024/11/28 07:57:06 Sent: 262144000 bytes
+2024/11/28 07:57:17 Connecting to TCP server at 192.168.18.7:4000
+2024/11/28 07:57:17 Connected to server
+2024/11/28 07:57:17 Starting to send data
+2024/11/28 07:57:22 Total duration: 5.584488869s
+2024/11/28 07:57:22 Sent: 524288000 bytes
+2024/11/28 07:57:23 Connecting to TCP server at 192.168.18.7:4000
+2024/11/28 07:57:23 Connected to server
+2024/11/28 07:57:23 Starting to send data
+2024/11/28 07:57:29 Total duration: 5.9569563389999995s
+2024/11/28 07:57:29 Sent: 524288000 bytes
+2024/11/28 07:57:31 Connecting to TCP server at 192.168.18.7:4000
+2024/11/28 07:57:31 Connected to server
+2024/11/28 07:57:31 Starting to send data
+2024/11/28 07:57:37 Total duration: 5.999549926s
+2024/11/28 07:57:37 Sent: 524288000 bytes
+2024/11/28 07:57:39 Connecting to TCP server at 192.168.18.7:4000
+2024/11/28 07:57:39 Connected to server
+2024/11/28 07:57:39 Starting to send data
+2024/11/28 07:57:44 Total duration: 5.590936607s
+2024/11/28 07:57:44 Sent: 524288000 bytes
+2024/11/28 07:57:46 Connecting to TCP server at 192.168.18.7:4000
+2024/11/28 07:57:46 Connected to server
+2024/11/28 07:57:46 Starting to send data
+2024/11/28 07:57:52 Total duration: 5.929438902s
+2024/11/28 07:57:52 Sent: 524288000 bytes
+2024/11/28 07:58:00 Connecting to TCP server at 192.168.18.7:4000
+2024/11/28 07:58:00 Connected to server
+2024/11/28 07:58:00 Starting to send data
+2024/11/28 07:58:12 Total duration: 11.554267573s
+2024/11/28 07:58:12 Sent: 1073741824 bytes
+2024/11/28 07:58:27 Connecting to TCP server at 192.168.18.7:4000
+2024/11/28 07:58:27 Connected to server
+2024/11/28 07:58:27 Starting to send data
+2024/11/28 07:58:41 Total duration: 13.604173595s
+2024/11/28 07:58:41 Sent: 1073741824 bytes
+2024/11/28 07:58:43 Connecting to TCP server at 192.168.18.7:4000
+2024/11/28 07:58:54 Connected to server
+2024/11/28 07:58:54 Starting to send data
+2024/11/28 07:59:06 Total duration: 11.623490317s
+2024/11/28 07:59:06 Sent: 1073741824 bytes
+2024/11/28 07:59:11 Connecting to TCP server at 192.168.18.7:4000
+2024/11/28 07:59:11 Connected to server
+2024/11/28 07:59:11 Starting to send data
+2024/11/28 07:59:23 Total duration: 11.880370657s
+2024/11/28 07:59:23 Sent: 1073741824 bytes
+2024/11/28 07:59:25 Connecting to TCP server at 192.168.18.7:4000
+2024/11/28 07:59:25 Connected to server
+2024/11/28 07:59:25 Starting to send data
+2024/11/28 07:59:37 Total duration: 11.526277234s
+2024/11/28 07:59:37 Sent: 1073741824 bytes
+2024/11/28 07:59:42 Connecting to TCP server at 192.168.18.7:4000
+2024/11/28 07:59:42 Connected to server
+2024/11/28 07:59:42 Starting to send data
+2024/11/28 08:00:06 Total duration: 24.492245263s
+2024/11/28 08:00:06 Sent: 2147483648 bytes
+2024/11/28 08:00:09 Connecting to TCP server at 192.168.18.7:4000
+2024/11/28 08:00:09 Connected to server
+2024/11/28 08:00:09 Starting to send data
+2024/11/28 08:00:32 Total duration: 23.384737414s
+2024/11/28 08:00:32 Sent: 2147483648 bytes
+2024/11/28 08:00:34 Connecting to TCP server at 192.168.18.7:4000
+2024/11/28 08:00:34 Connected to server
+2024/11/28 08:00:34 Starting to send data
+2024/11/28 08:01:00 Total duration: 25.329755251s
+2024/11/28 08:01:00 Sent: 2147483648 bytes
+2024/11/28 08:01:02 Connecting to TCP server at 192.168.18.7:4000
+2024/11/28 08:01:02 Connected to server
+2024/11/28 08:01:02 Starting to send data
+2024/11/28 08:01:27 Total duration: 24.321901166s
+2024/11/28 08:01:27 Sent: 2147483648 bytes
+2024/11/28 08:01:29 Connecting to TCP server at 192.168.18.7:4000
+2024/11/28 08:01:29 Connected to server
+2024/11/28 08:01:29 Starting to send data
+2024/11/28 08:01:57 Total duration: 27.565958073s
+2024/11/28 08:01:57 Sent: 2147483648 bytes
+2024/11/28 08:02:03 Connecting to TCP server at 192.168.18.7:4000
+2024/11/28 08:02:03 Connected to server
+2024/11/28 08:02:03 Starting to send data
+2024/11/28 08:02:54 Total duration: 51.084965034s
+2024/11/28 08:02:54 Sent: 4294967296 bytes
+2024/11/28 08:03:03 Connecting to TCP server at 192.168.18.7:4000
+2024/11/28 08:03:03 Connected to server
+2024/11/28 08:03:03 Starting to send data
+2024/11/28 08:03:48 Total duration: 45.503515097s
+2024/11/28 08:03:48 Sent: 4294967296 bytes
+2024/11/28 08:03:51 Connecting to TCP server at 192.168.18.7:4000
+2024/11/28 08:03:51 Connected to server
+2024/11/28 08:03:51 Starting to send data
+2024/11/28 08:04:41 Total duration: 50.401666581s
+2024/11/28 08:04:41 Sent: 4294967296 bytes
+2024/11/28 08:04:43 Connecting to TCP server at 192.168.18.7:4000
+2024/11/28 08:04:43 Connected to server
+2024/11/28 08:04:43 Starting to send data
+2024/11/28 08:05:31 Total duration: 47.300194932s
+2024/11/28 08:05:31 Sent: 4294967296 bytes
+2024/11/28 08:05:33 Connecting to TCP server at 192.168.18.7:4000
+2024/11/28 08:05:33 Connected to server
+2024/11/28 08:05:33 Starting to send data
+2024/11/28 08:06:21 Total duration: 47.837298616s
+2024/11/28 08:06:21 Sent: 4294967296 bytes

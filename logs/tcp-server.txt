@@ -1,12 +1,52 @@
-2024/11/28 07:30:56 Starting TCP server at 192.168.18.7:4000
-2024/11/28 07:30:56 Server started
-2024/11/28 07:31:05 Connection established
-2024/11/28 07:31:08 Received: 262144000 bytes
-2024/11/28 07:31:20 Connection established
-2024/11/28 07:31:23 Received: 262144000 bytes
-2024/11/28 07:31:28 Connection established
-2024/11/28 07:31:32 Received: 262144000 bytes
-2024/11/28 07:31:38 Connection established
-2024/11/28 07:31:41 Received: 262144000 bytes
-2024/11/28 07:31:48 Connection established
-2024/11/28 07:31:51 Received: 262144000 bytes
+2024/11/28 07:56:19 Starting TCP server at 192.168.18.7:4000
+2024/11/28 07:56:19 Server started
+2024/11/28 07:56:43 Connection established
+2024/11/28 07:56:46 Received: 262144000 bytes
+2024/11/28 07:56:49 Connection established
+2024/11/28 07:56:52 Received: 262144000 bytes
+2024/11/28 07:56:54 Connection established
+2024/11/28 07:56:57 Received: 262144000 bytes
+2024/11/28 07:56:59 Connection established
+2024/11/28 07:57:02 Received: 262144000 bytes
+2024/11/28 07:57:03 Connection established
+2024/11/28 07:57:06 Received: 262144000 bytes
+2024/11/28 07:57:16 Connection established
+2024/11/28 07:57:22 Received: 524288000 bytes
+2024/11/28 07:57:23 Connection established
+2024/11/28 07:57:29 Received: 524288000 bytes
+2024/11/28 07:57:31 Connection established
+2024/11/28 07:57:37 Received: 524288000 bytes
+2024/11/28 07:57:39 Connection established
+2024/11/28 07:57:44 Received: 524288000 bytes
+2024/11/28 07:57:46 Connection established
+2024/11/28 07:57:52 Received: 524288000 bytes
+2024/11/28 07:58:00 Connection established
+2024/11/28 07:58:12 Received: 1073741824 bytes
+2024/11/28 07:58:27 Connection established
+2024/11/28 07:58:41 Received: 1073741824 bytes
+2024/11/28 07:58:54 Connection established
+2024/11/28 07:59:06 Received: 1073741824 bytes
+2024/11/28 07:59:11 Connection established
+2024/11/28 07:59:23 Received: 1073741824 bytes
+2024/11/28 07:59:25 Connection established
+2024/11/28 07:59:37 Received: 1073741824 bytes
+2024/11/28 07:59:42 Connection established
+2024/11/28 08:00:06 Received: 2147483648 bytes
+2024/11/28 08:00:09 Connection established
+2024/11/28 08:00:32 Received: 2147483648 bytes
+2024/11/28 08:00:34 Connection established
+2024/11/28 08:01:00 Received: 2147483648 bytes
+2024/11/28 08:01:02 Connection established
+2024/11/28 08:01:27 Received: 2147483648 bytes
+2024/11/28 08:01:29 Connection established
+2024/11/28 08:01:57 Received: 2147483648 bytes
+2024/11/28 08:02:03 Connection established
+2024/11/28 08:02:54 Received: 4294967296 bytes
+2024/11/28 08:03:03 Connection established
+2024/11/28 08:03:48 Received: 4294967296 bytes
+2024/11/28 08:03:51 Connection established
+2024/11/28 08:04:41 Received: 4294967296 bytes
+2024/11/28 08:04:43 Connection established
+2024/11/28 08:05:31 Received: 4294967296 bytes
+2024/11/28 08:05:33 Connection established
+2024/11/28 08:06:21 Received: 4294967296 bytes
